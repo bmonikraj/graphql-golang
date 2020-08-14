@@ -1,12 +1,13 @@
 package main
 
 import (
-    "encoding/json"
     "fmt"
     "log"
     "github.com/graphql-go/graphql"
     "database/sql"
-	_ "github.com/go-sql-driver/mysql"
+    _ "github.com/go-sql-driver/mysql"
+    "net/http"
+    "github.com/gin-gonic/gin"
 )
 
 type Records struct {
@@ -20,6 +21,7 @@ type Records struct {
 	REQ_TIME string `json:"REQ_TIME"`
 	HASH_ID string `json:"HASH_ID"`
 }
+
 
 var recordType = graphql.NewObject(
     graphql.ObjectConfig{
@@ -216,48 +218,24 @@ func main() {
         log.Fatalf("failed to create new schema, error : %v", err)
     }
 
-    /*
-    query := `
-        {
-            list (num:5){
-                id
-                req_time
-                cload
-            }
-        }
-    `
-    */
-    
-    
-    query := `
-        {
-            records (id:1){
-                id
-                req_time
-                cload
-                server
-            }
-        }
-    `
-    
+    r := gin.Default()
 
-    /*
-    query := `
-        mutation {
-            create(id:1, server: "YAMUNA", network: "S2", req_id: "f74ebc99-e2b0-4bfa-a56f-52aa7dfe948d", region_in: "SYS10", region_out: "SYS3", cload: 1003, req_time: "2020-08-12 17:30:00", hash_id: "0x5b40cf43860bb69bca3ea38e53a6a4ad94d263c4dd0e445b83954fbb6505033eb0a4138518cca1e9") {
-                id
-                cload
-            }
-        }
-    `
-    */
+    r.POST("/graphql", func(c *gin.Context) {
 
-    
-    params := graphql.Params{Schema: schema, RequestString: query}
-    r := graphql.Do(params)
-    if len(r.Errors) > 0 {
-        log.Fatalf("failed to execute graphql operation, errors: %+v", r.Errors)
-    }
-    rJSON, _ := json.Marshal(r)
-    fmt.Printf("%s \n", rJSON)
+        q := struct {
+            Query string `json:"query"`
+        }{}
+        c.BindJSON(&q)
+
+        fmt.Println(q.Query)
+
+        params := graphql.Params{Schema: schema, RequestString: q.Query}
+        res := graphql.Do(params)
+        if len(res.Errors) > 0 {
+            c.JSON(500, gin.H{"error" : res.Errors})
+        }
+        c.JSON(http.StatusOK, res)
+    })
+
+    r.Run()
 }
