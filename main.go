@@ -227,8 +227,6 @@ func main() {
         }{}
         c.BindJSON(&q)
 
-        fmt.Println(q.Query)
-
         params := graphql.Params{Schema: schema, RequestString: q.Query}
         res := graphql.Do(params)
         if len(res.Errors) > 0 {
