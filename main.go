@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "os"
     "log"
     "github.com/graphql-go/graphql"
     "database/sql"
@@ -223,7 +224,7 @@ func main() {
     r.POST("/graphql", func(c *gin.Context) {
 
         q := struct {
-            Query string `json:"query"`
+            Query string `json:"Query"`
         }{}
         c.BindJSON(&q)
 
@@ -235,5 +236,7 @@ func main() {
         c.JSON(http.StatusOK, res)
     })
 
-    r.Run()
+    host := os.Args[1]
+    port := os.Args[2]
+    r.Run(host+":"+port)
 }
