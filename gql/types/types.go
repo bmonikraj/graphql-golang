@@ -1,7 +1,7 @@
 package types
 
 import (
-    "fmt"
+    "os"
     "github.com/graphql-go/graphql"
     "database/sql"
     _ "github.com/go-sql-driver/mysql"
@@ -55,7 +55,7 @@ var FieldType = graphql.Fields{
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
             id, ok := p.Args["id"].(int)
             if ok {
-                db, err := sql.Open("mysql", "root:Root123#@tcp(13.233.86.58:3306)/graphql")
+                db, err := sql.Open("mysql", os.Args[4]+":"+os.Args[5]+"@tcp("+os.Args[3]+")/"+os.Args[6])
 
                 if err != nil {
                     panic(err.Error())
@@ -91,7 +91,7 @@ var FieldType = graphql.Fields{
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
             num, ok := p.Args["num"].(int)
             if ok {
-                db, err := sql.Open("mysql", "root:Root123#@tcp(13.233.86.58:3306)/graphql")
+                db, err := sql.Open("mysql", os.Args[4]+":"+os.Args[5]+"@tcp("+os.Args[3]+")/"+os.Args[6])
 
                 if err != nil {
                     panic(err.Error())
@@ -102,8 +102,6 @@ var FieldType = graphql.Fields{
                 results, err := db.Query("SELECT * FROM data LIMIT ?", num)
                 if err != nil {
                     panic(err.Error())
-                } else {
-                    fmt.Println("results fetched")
                 }
                 
                 var recordsList []model.Records
@@ -170,7 +168,7 @@ var MutationType = graphql.NewObject(
                         REQ_TIME: params.Args["req_time"].(string),
                         HASH_ID: params.Args["hash_id"].(string),
                     }
-                    db, err := sql.Open("mysql", "root:Root123#@tcp(13.233.86.58:3306)/graphql")
+                    db, err := sql.Open("mysql", os.Args[4]+":"+os.Args[5]+"@tcp("+os.Args[3]+")/"+os.Args[6])
 
                     if err != nil {
                         panic(err.Error())

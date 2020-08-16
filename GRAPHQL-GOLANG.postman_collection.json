@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "97703a74-9e89-4c0b-93c7-48064865cbeb",
+		"name": "GRAPHQL-GOLANG",
+		"description": "Project Repo - https://github.com/bmonikraj/graphql-golang",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fetch One Record By ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"{ records (id:5) { id req_time cload server } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch N Records by List",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"{ list (num:15) { id req_time cload server network } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mutate - Add One Record",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"mutation { create( id:4, server: \\\"YAMUNA\\\", network: \\\"S5\\\", req_id: \\\"a74ebc99-e2b3-4bfa-a56f-52aa7dfe948d\\\", region_in: \\\"SYS1\\\", region_out: \\\"SYS7\\\", cload: 6577, req_time: \\\"2020-08-13 18:30:00\\\", hash_id: \\\"0x5b40cf43860bb69bca3ea38e53a6a4ad94d263c4dd0e445b83954fbb6505033eb0a4138518cca12f\\\" ) { id cload server network } }\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
